@@ -25,19 +25,19 @@
                      <font>
                         <Font size="15.0" />
                      </font></TextField>
-                  <TextField fx:id="tfSignP" layoutX="577.0" layoutY="59.0" onKeyReleased="#tfSignPKeyReleased" prefHeight="51.0" prefWidth="134.0" promptText="P..." AnchorPane.rightAnchor="369.0">
+                  <TextField fx:id="tfSignP" layoutX="577.0" layoutY="59.0" onKeyReleased="#tfSignPrimeKeyReleased" prefHeight="51.0" prefWidth="134.0" promptText="P..." AnchorPane.rightAnchor="369.0">
                      <font>
                         <Font size="20.0" />
                      </font></TextField>
-                  <TextField fx:id="tfSignQ" layoutX="740.0" layoutY="59.0" onKeyReleased="#tfSignQReleased" prefHeight="51.0" prefWidth="134.0" promptText="Q..." AnchorPane.rightAnchor="206.0">
+                  <TextField fx:id="tfSignQ" layoutX="740.0" layoutY="59.0" onKeyReleased="#tfSignPrimeKeyReleased" prefHeight="51.0" prefWidth="134.0" promptText="Q..." AnchorPane.rightAnchor="206.0">
                      <font>
                         <Font size="20.0" />
                      </font></TextField>
-                  <TextField fx:id="tfSignD" layoutX="902.0" layoutY="59.0" onKeyReleased="#tfQSignKeyReleased" onMouseDragReleased="#tfSignDKeyReleased" prefHeight="51.0" prefWidth="134.0" promptText="D..." AnchorPane.rightAnchor="44.0">
+                  <TextField fx:id="tfSignD" layoutX="902.0" layoutY="59.0" onKeyReleased="#tfSignDKeyReleased" prefHeight="51.0" prefWidth="134.0" promptText="D..." AnchorPane.rightAnchor="44.0">
                      <font>
                         <Font size="20.0" />
                      </font></TextField>
-                  <ComboBox fx:id="cbSignSelectHashFunction" layoutX="577.0" layoutY="206.0" prefHeight="52.0" prefWidth="463.0" AnchorPane.rightAnchor="44.0" />
+                  <ComboBox fx:id="cbSignSelectHashFunction" layoutX="576.0" layoutY="274.0" prefHeight="52.0" prefWidth="463.0" AnchorPane.rightAnchor="41.0" />
                   <Label layoutX="589.0" layoutY="31.0" text="Prime number P" AnchorPane.rightAnchor="381.0">
                      <font>
                         <Font name="Ubuntu" size="15.0" />
@@ -53,12 +53,12 @@
                         <Font name="Ubuntu" size="15.0" />
                      </font>
                   </Label>
-                  <Label layoutX="584.0" layoutY="174.0" text="Select a hash algorithm" AnchorPane.rightAnchor="282.0">
+                  <Label layoutX="584.0" layoutY="234.0" text="Select a hash algorithm" AnchorPane.rightAnchor="282.0">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label layoutX="584.0" layoutY="354.0" text="HASH (10 based)" AnchorPane.rightAnchor="342.0">
+                  <Label layoutX="576.0" layoutY="355.0" text="HASH mod p*q (10 based)" AnchorPane.rightAnchor="267.0">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -73,7 +73,27 @@
                         <Font size="21.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnSignSelectFile" layoutX="154.0" layoutY="635.0" mnemonicParsing="false" onAction="#btnSignSelectFileClick" prefHeight="33.0" prefWidth="168.0" text="Select file..." AnchorPane.bottomAnchor="19.0" AnchorPane.leftAnchor="154.0" AnchorPane.rightAnchor="758.0" />
+                  <Button fx:id="btnSignSelectFile" layoutX="154.0" layoutY="635.0" mnemonicParsing="false" onAction="#btnSelectFileClick" prefHeight="33.0" prefWidth="168.0" text="Select file..." AnchorPane.bottomAnchor="19.0" AnchorPane.leftAnchor="154.0" AnchorPane.rightAnchor="758.0" />
+                  <TextField fx:id="tfSignE" editable="false" layoutX="577.0" layoutY="155.0" prefHeight="49.0" prefWidth="201.0" promptText="E..." AnchorPane.rightAnchor="302.0">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="tfSignR" layoutX="835.0" layoutY="155.0" prefHeight="49.0" prefWidth="201.0" promptText="R..." AnchorPane.rightAnchor="44.0">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </TextField>
+                  <Label layoutX="619.0" layoutY="131.0" text="Generated E">
+                     <font>
+                        <Font name="Ubuntu" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="880.0" layoutY="131.0" text="Generated R">
+                     <font>
+                        <Font name="Ubuntu" size="15.0" />
+                     </font>
+                  </Label>
                </children></AnchorPane>
       </content>
     </Tab>
@@ -81,7 +101,14 @@
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="btnSelectFileToSignClick" layoutX="398.0" layoutY="150.0" mnemonicParsing="false" text="Button" />
+                  <Button fx:id="btnCheckSignSelectFile" layoutX="209.0" layoutY="634.0" mnemonicParsing="false" onAction="#btnSelectFileClick" prefHeight="33.0" prefWidth="168.0" text="Select file..." AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="209.0" AnchorPane.rightAnchor="703.0" />
+                  <TextArea fx:id="taChechSignMessage" prefHeight="623.0" prefWidth="585.0" wrapText="true" AnchorPane.bottomAnchor="64.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="495.0" AnchorPane.topAnchor="0.0" />
+                  <Label layoutX="593.0" layoutY="269.0" text="Select a hash algorithm">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="cbCheckSignSelectHashFunction" layoutX="593.0" layoutY="300.0" prefHeight="52.0" prefWidth="463.0" />
                </children>
             </AnchorPane>
       </content>

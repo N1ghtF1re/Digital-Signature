@@ -13,6 +13,15 @@ public class RSASignature implements SignatureAlgorithm {
     private CryptoHash hashFunction;
 
 
+
+    public RSAPublicKey getPublicKey() {
+        return publicKey;
+    }
+
+    public CryptoHash getHashFunction() {
+        return hashFunction;
+    }
+
     public RSASignature(BigInteger p, BigInteger q, BigInteger privateexp, CryptoHash hashFunction) {
         if(!DigitalSignatureMath.isPrime(p)) throw new ArithmeticException("P should be prime");
         if(!DigitalSignatureMath.isPrime(q)) throw new ArithmeticException("Q should be prime");
@@ -33,13 +42,14 @@ public class RSASignature implements SignatureAlgorithm {
 
     @Override
     public BigInteger sign(byte[] message) {
-        BigInteger hash = hashFunction.getIntHash(message);
+        System.out.println(hashFunction.getHash(message));
+        BigInteger hash = hashFunction.getIntHash(message).mod(publicKey.getR());
         return DigitalSignatureMath.power(hash, privateKey.getD(), privateKey.getR()); // return hash^d mod r
     }
 
     public static boolean checkSignature(RSAPublicKey key, BigInteger s, byte[] message, CryptoHash hashFunction) {
         BigInteger hashFromSign = DigitalSignatureMath.power(s, key.getE(), key.getR());
-        BigInteger actualHash = hashFunction.getIntHash(message);
+        BigInteger actualHash = hashFunction.getIntHash(message).mod(key.getR());
         return hashFromSign.equals(actualHash);
     }
 }

@@ -9,7 +9,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import men.brakh.cryptohash.CryptoHash;
 import men.brakh.cryptohash.impl.SHA1;
+import men.brakh.digitalSignature.DigitalSignatureMath;
 import men.brakh.digitalSignature.SignatureAlgorithm;
+import men.brakh.digitalSignature.rsa.RSAPrivateKey;
+import men.brakh.digitalSignature.rsa.RSAPublicKey;
 import men.brakh.digitalSignature.rsa.RSASignature;
 import men.brakh.digitalSignatureFrame.BytesConverter;
 
@@ -26,6 +29,7 @@ import java.util.Map;
 public class Controller {
     private String pathToSign;
     private Map<String, CryptoHash> cryptoHashAlgorythms;
+    private String errorStyle = "-fx-background-color: red; -fx-text-fill: #fff";
 
 
     void errorAlert(String message) {
@@ -38,22 +42,10 @@ public class Controller {
     }
 
     @FXML
-    private TextField tfSignD;
+    private TextArea taChechSignMessage;
 
     @FXML
-    private Button btnSelectFileToSignClick;
-
-    @FXML
-    private Button btnSignSelectFile;
-
-    @FXML
-    private TextField tfSignHash;
-
-    @FXML
-    private Button btnSign;
-
-    @FXML
-    private ComboBox<String> cbSignSelectHashFunction;
+    private Button btnCheckSignSelectFile;
 
     @FXML
     private TextField tfSignP;
@@ -65,25 +57,73 @@ public class Controller {
     private TextField tfSignQ;
 
     @FXML
+    private TextField tfSignR;
+
+    @FXML
     private TextField tfSignSignature;
 
     @FXML
-    void tfSignPKeyReleased(KeyEvent event) {
-
-    }
+    private TextField tfSignD;
 
     @FXML
-    void tfSignQReleased(KeyEvent event) {
-    }
+    private Button btnSignSelectFile;
 
     @FXML
-    void tfQSignKeyReleased(KeyEvent event) {
+    private TextField tfSignE;
 
+    @FXML
+    private TextField tfSignHash;
+
+    @FXML
+    private Button btnSign;
+
+    @FXML
+    private ComboBox<String> cbCheckSignSelectHashFunction;
+
+    @FXML
+    private ComboBox<String> cbSignSelectHashFunction;
+
+
+
+    @FXML
+    void tfSignPrimeKeyReleased(KeyEvent event) {
+        TextField textField = (TextField) event.getSource();
+        try {
+            BigInteger q = new BigInteger(textField.getText());
+            if(DigitalSignatureMath.isPrime(q)) {
+                textField.setStyle("");
+            } else {
+                textField.setStyle(errorStyle);
+            }
+        } catch (Exception e) {
+            textField.setStyle(errorStyle);
+        }
+        chechD();
+    }
+
+    void chechD() {
+        TextField textField = tfSignD;
+        try {
+
+            BigInteger d = new BigInteger(textField.getText());
+
+            BigInteger p = new BigInteger(tfSignP.getText());
+            BigInteger q = new BigInteger(tfSignP.getText());
+            BigInteger phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
+
+            if ((d.compareTo(BigInteger.ONE) <= 0) || (d.compareTo(phi) >= 0))
+                throw new ArithmeticException("D should be from 2 to phi(p*q) - 1");
+            if (!d.gcd(phi).equals(BigInteger.ONE))
+                throw new ArithmeticException("D should be mutually simple with phi(p*q)");
+            textField.setStyle("");
+        } catch (Exception e) {
+            textField.setStyle(errorStyle);
+        }
     }
 
     @FXML
     void tfSignDKeyReleased(KeyEvent event) {
-
+        chechD();
     }
 
     void saveSignature(String filepath, BigInteger signature) throws IOException {
@@ -100,9 +140,8 @@ public class Controller {
             CryptoHash cryptoHash = cryptoHashAlgorythms.get(hashAlgorythm);
 
             byte[] message = Files.readAllBytes(Paths.get(pathToSign));
-            BigInteger hash = cryptoHash.getIntHash(message);
 
-            tfSignHash.setText(hash.toString());
+
 
             BigInteger p = new BigInteger(tfSignP.getText());
             BigInteger q = new BigInteger(tfSignQ.getText());
@@ -111,17 +150,28 @@ public class Controller {
             SignatureAlgorithm signatureAlgorithm = new RSASignature(p,q,d,cryptoHash);
             BigInteger signature = signatureAlgorithm.sign(message);
 
+            RSAPublicKey rsaPublicKey = ((RSASignature) signatureAlgorithm).getPublicKey();
+
+            tfSignE.setText(rsaPublicKey.getE().toString());
+            tfSignR.setText(rsaPublicKey.getR().toString());
+
+
             tfSignSignature.setText(signature.toString());
+
+            BigInteger hash = cryptoHash.getIntHash(message).mod(rsaPublicKey.getR());
+            tfSignHash.setText(hash.toString());
             saveSignature(pathToSign, signature);
         } catch (ArithmeticException e) {
             errorAlert(e.getMessage());
         } catch (IOException e) {
             errorAlert("Invalid file");
+        } catch (Exception e) {
+            errorAlert(e.getMessage());
         }
     }
 
     @FXML
-    void btnSignSelectFileClick(ActionEvent event) {
+    void btnSelectFileClick(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         File selectedFile = fileChooser.showOpenDialog(null);
         String path;
@@ -130,11 +180,15 @@ public class Controller {
             try {
                 byte[] plain = Files.readAllBytes(Paths.get(selectedFile.getAbsolutePath()));
                 BytesConverter bytesConverter = new BytesConverter();
-                tfSignSignature.clear();
-                tfSignHash.clear();
-                taSignedMessage.setText(bytesConverter.byteArray2String(plain));
-                pathToSign = path;
+
+                if(event.getSource() == btnSignSelectFile) {
+                    tfSignSignature.clear();
+                    tfSignHash.clear();
+                    taSignedMessage.setText(bytesConverter.byteArray2String(plain));
+                    pathToSign = path;
+                }
             } catch (IOException e) {
+
             }
         }
     }
