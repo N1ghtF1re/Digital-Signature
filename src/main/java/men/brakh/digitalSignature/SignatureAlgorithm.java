@@ -1,4 +1,4 @@
-package men.brakh.electronicSignature;
+package men.brakh.digitalSignature;
 
 public interface SignatureAlgorithm {
 }
