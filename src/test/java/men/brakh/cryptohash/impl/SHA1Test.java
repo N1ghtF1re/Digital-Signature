@@ -1,4 +1,4 @@
-package men.brakh.cryptyhash.impl;
+package men.brakh.cryptohash.impl;
 
 import org.junit.Test;
 

@@ -1,6 +1,6 @@
-package men.brakh.cryptyhash.impl;
+package men.brakh.cryptohash.impl;
 
-import men.brakh.cryptyhash.CryptoHash;
+import men.brakh.cryptohash.CryptoHash;
 
 import java.math.BigInteger;
 

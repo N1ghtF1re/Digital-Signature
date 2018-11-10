@@ -1,4 +1,4 @@
-package men.brakh.cryptyhash;
+package men.brakh.cryptohash;
 
 import java.math.BigInteger;
 
