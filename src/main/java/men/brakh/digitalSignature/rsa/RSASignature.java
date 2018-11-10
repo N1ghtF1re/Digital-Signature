@@ -13,7 +13,7 @@ public class RSASignature implements SignatureAlgorithm {
     private CryptoHash hashFunction;
 
 
-    RSASignature(BigInteger p, BigInteger q, BigInteger privateexp, CryptoHash hashFunction) {
+    public RSASignature(BigInteger p, BigInteger q, BigInteger privateexp, CryptoHash hashFunction) {
         if(!DigitalSignatureMath.isPrime(p)) throw new ArithmeticException("P should be prime");
         if(!DigitalSignatureMath.isPrime(q)) throw new ArithmeticException("Q should be prime");
 
