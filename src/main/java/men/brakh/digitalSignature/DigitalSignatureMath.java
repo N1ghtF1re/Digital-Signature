@@ -1,12 +1,33 @@
 package men.brakh.digitalSignature;
 
 
+import java.math.BigInteger;
+
 /**
  * Math package for digital signature
  * @author Pankratiew Alexandr
  */
 
 public class DigitalSignatureMath {
+
+    /**
+     * Calculating the square root of BigInteger number
+     * @param x Number
+     * @return sqrt(x)
+     */
+    public static BigInteger sqrt(BigInteger x) {
+        BigInteger div = BigInteger.ZERO.setBit(x.bitLength()/2);
+        BigInteger div2 = div;
+        // Loop until we hit the same value twice in a row, or wind
+        // up alternating.
+        for(;;) {
+            BigInteger y = div.add(x.divide(div)).shiftRight(1);
+            if (y.equals(div) || y.equals(div2))
+                return y;
+            div2 = div;
+            div = y;
+        }
+    }
 
     /**
      * Modular exponentiation
@@ -16,31 +37,30 @@ public class DigitalSignatureMath {
      * @param m module
      * @return a^z mod m
      */
-    public static long power(long a, long z, long m) {
-        long a1 = a;
-        long z1 = z;
-        long x = 1;
-        while (z1 != 0) {
-            while (z1 % 2 == 0) {
-                z1 /= 2;
-                a1 = (a1 * a1) % m;
+    public static BigInteger power(BigInteger a, BigInteger z, BigInteger m) {
+        BigInteger a1 = a;
+        BigInteger z1 = z;
+        BigInteger x = BigInteger.ONE;
+        while (!z1.equals(BigInteger.ZERO)) { // if z1 != 0
+            while (z1.mod(BigInteger.valueOf(2)).equals(BigInteger.ZERO)) { // z % 2 = 0
+                z1 = z1.divide(BigInteger.valueOf(2)); // z1 = z1 /2
+                a1 = a1.multiply(a1).mod(m);  //a1 = (a1 * a1) % m;
             }
-            z1 = z1 - 1;
-            x = (x * a1) % m;
+            z1 = z1.add(BigInteger.valueOf(-1)); // z1 = z1 - 1;
+            x = x.multiply (a1).mod(m); // x =(x * a1) % m;
         }
         return x;
     }
 
     /**
      * Check for prime numbers
-     * @param x number
+     * @param n number
      * @return true if number prime
      */
-    public static Boolean isPrime(long x) {
-        for(long i=2;i<=Math.sqrt(x);i++)
-            if(x%i==0)
-                return false;
-        return true;
+    public static Boolean isPrime(BigInteger n) {
+        BigInteger lessOne = n.subtract(BigInteger.ONE);
+        // get the next prime from one less than number and check with the number
+        return lessOne.nextProbablePrime().compareTo(n) == 0;
     }
 
     /**
@@ -49,10 +69,8 @@ public class DigitalSignatureMath {
      * @param b second number
      * @return greatest common divisor of a and b
      */
-    public static long gcd(long a, long b){
-        if(b==0)
-            return a;
-        return gcd(b, a%b);
+    public static BigInteger gcd(BigInteger a, BigInteger b){
+        return a.gcd(b);
     }
 
 
@@ -63,20 +81,20 @@ public class DigitalSignatureMath {
      * @param b second number
      * @return ARRAY: [0] => x1, [1] => y1, [2] => d1
      */
-    public static int[] advancedEuclideanAlgorithm(int a, int b) {
-        int d0 = a;
-        int d1 = b;
-        int x0 = 1;
-        int x1 = 0;
-        int y0 = 0;
-        int y1 = 1;
+    public static BigInteger[] advancedEuclideanAlgorithm(BigInteger a, BigInteger b) {
+        BigInteger d0 = a;
+        BigInteger d1 = b;
+        BigInteger x0 = BigInteger.ONE;
+        BigInteger x1 = BigInteger.ZERO;
+        BigInteger y0 = BigInteger.ZERO;
+        BigInteger y1 = BigInteger.ONE;
 
 
-        while(d1 > 1) {
-            int q = d0 / d1;
-            int d2 = d0 % d1;
-            int x2 = x0 - q*x1;
-            int y2 = y0 - q*y1;
+        while(d1.compareTo(BigInteger.ONE) > 0) { //  IF d1 > 1
+            BigInteger q = d0.divide(d1); // q = d0/d1
+            BigInteger d2 = d0.mod(d1); // d2 = d0 % d1;
+            BigInteger x2 = x0.subtract(q.multiply(x1)); //x2 = x0 - q*x1;
+            BigInteger y2 = y0.subtract(q.multiply(y1));  // y2 = y0 - q*y1;
             d0 = d1;
             d1 = d2;
             x0 = x1;
@@ -84,7 +102,7 @@ public class DigitalSignatureMath {
             y0 = y1;
             y1 = y2;
         }
-        return new int[] {x1,y1,d1};
+        return new BigInteger[] {x1,y1,d1};
     }
 
     /**
@@ -93,20 +111,19 @@ public class DigitalSignatureMath {
      * @param phi Euler function from modulo
      * @return multiplicative inverse number
      */
-    public static int getMultiplicativelyInverse(int number, int phi) {
-        if(gcd(number, phi) != 0) throw new ArithmeticException("Euler's function and number must be mutually simple.\n");
-        if(number > phi) throw  new ArithmeticException("Number >= phi");
+    public static BigInteger getMultiplicativelyInverse(BigInteger number, BigInteger phi) {
+        if(!gcd(number, phi).equals(BigInteger.ONE)) throw new ArithmeticException("Euler's function and number must be mutually simple.\n");
+        if(number.compareTo(phi) > 0) throw  new ArithmeticException("Number >= phi");
 
 
-        int[] coefs = advancedEuclideanAlgorithm(phi, number);
-        int y1 = coefs[1];
-        while(y1 < 0) {
-            y1 += phi;
+        BigInteger[] coefs = advancedEuclideanAlgorithm(phi, number);
+        BigInteger y1 = coefs[1];
+        while(y1.compareTo(BigInteger.ZERO) < 0) {
+            y1 = y1.add(phi);
         }
 
         return y1;
     }
 
-
-
+    
 }
