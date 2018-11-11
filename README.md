@@ -12,7 +12,7 @@
 ## About the library
 The library contains contains RSA digital signature algorithm
 
-## Class Elgamal: 
+## Class RSASignature: 
 
 ### Constructors: 
 - **RSASignature(BigInteger p, BigInteger q, BigInteger privateexp, CryptoHash hashFunction)** 
