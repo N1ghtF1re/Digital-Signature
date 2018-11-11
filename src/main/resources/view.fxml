@@ -79,17 +79,17 @@
                         <Font size="20.0" />
                      </font>
                   </TextField>
-                  <TextField fx:id="tfSignR" layoutX="835.0" layoutY="155.0" prefHeight="49.0" prefWidth="201.0" promptText="R..." AnchorPane.rightAnchor="44.0">
+                  <TextField fx:id="tfSignR" editable="false" layoutX="835.0" layoutY="155.0" prefHeight="49.0" prefWidth="201.0" promptText="R..." AnchorPane.rightAnchor="44.0">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </TextField>
-                  <Label layoutX="619.0" layoutY="131.0" text="Generated E">
+                  <Label layoutX="619.0" layoutY="131.0" text="Generated E" AnchorPane.rightAnchor="376.0">
                      <font>
                         <Font name="Ubuntu" size="15.0" />
                      </font>
                   </Label>
-                  <Label layoutX="880.0" layoutY="131.0" text="Generated R">
+                  <Label layoutX="893.0" layoutY="123.0" text="Generated R" AnchorPane.rightAnchor="101.0">
                      <font>
                         <Font name="Ubuntu" size="15.0" />
                      </font>
@@ -103,12 +103,68 @@
                <children>
                   <Button fx:id="btnCheckSignSelectFile" layoutX="209.0" layoutY="634.0" mnemonicParsing="false" onAction="#btnSelectFileClick" prefHeight="33.0" prefWidth="168.0" text="Select file..." AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="209.0" AnchorPane.rightAnchor="703.0" />
                   <TextArea fx:id="taChechSignMessage" prefHeight="623.0" prefWidth="585.0" wrapText="true" AnchorPane.bottomAnchor="64.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="495.0" AnchorPane.topAnchor="0.0" />
-                  <Label layoutX="593.0" layoutY="269.0" text="Select a hash algorithm">
+                  <Label layoutX="595.0" layoutY="148.0" text="Select a hash algorithm" AnchorPane.rightAnchor="271.0">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="cbCheckSignSelectHashFunction" layoutX="593.0" layoutY="300.0" prefHeight="52.0" prefWidth="463.0" />
+                  <ComboBox fx:id="cbCheckSignSelectHashFunction" layoutX="593.0" layoutY="176.0" prefHeight="52.0" prefWidth="463.0" AnchorPane.rightAnchor="24.0" />
+                  <Label layoutX="673.0" layoutY="41.0" text="Public R" AnchorPane.rightAnchor="117.0">
+                     <font>
+                        <Font name="Ubuntu" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="686.0" layoutY="41.0" text="Public E" AnchorPane.rightAnchor="340.0">
+                     <font>
+                        <Font name="Ubuntu" size="15.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="tfCheckSignR" layoutX="838.0" layoutY="75.0" prefHeight="49.0" prefWidth="201.0" promptText="R..." AnchorPane.rightAnchor="41.0">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="tfCheckSignE" layoutX="619.0" layoutY="75.0" prefHeight="49.0" prefWidth="201.0" promptText="E..." AnchorPane.rightAnchor="260.0">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="tfExpectedHash" layoutX="595.0" layoutY="462.0" prefHeight="61.0" prefWidth="459.0" AnchorPane.rightAnchor="26.0">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </TextField>
+                  <Label layoutX="593.0" layoutY="430.0" text="Expected hash" AnchorPane.rightAnchor="368.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="btnChechSignature" layoutX="711.0" layoutY="354.0" mnemonicParsing="false" onAction="#btnCheckSignatureClick" prefHeight="67.0" prefWidth="227.0" text="Check Signature" AnchorPane.rightAnchor="142.0">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Button>
+                  <Label layoutX="595.0" layoutY="531.0" text="Actual hash" AnchorPane.rightAnchor="391.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="tfActualHash" layoutX="595.0" layoutY="562.0" prefHeight="61.0" prefWidth="459.0" AnchorPane.rightAnchor="26.0">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="tfCheckSignSignature" layoutX="595.0" layoutY="286.0" prefHeight="52.0" prefWidth="459.0" AnchorPane.rightAnchor="26.0">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </TextField>
+                  <Label layoutX="595.0" layoutY="260.0" />
+                  <Label layoutX="594.0" layoutY="260.0" text="Digital signature" AnchorPane.rightAnchor="361.0">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
       </content>

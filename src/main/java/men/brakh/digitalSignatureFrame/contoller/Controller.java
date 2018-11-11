@@ -11,13 +11,11 @@ import men.brakh.cryptohash.CryptoHash;
 import men.brakh.cryptohash.impl.SHA1;
 import men.brakh.digitalSignature.DigitalSignatureMath;
 import men.brakh.digitalSignature.SignatureAlgorithm;
-import men.brakh.digitalSignature.rsa.RSAPrivateKey;
 import men.brakh.digitalSignature.rsa.RSAPublicKey;
 import men.brakh.digitalSignature.rsa.RSASignature;
 import men.brakh.digitalSignatureFrame.BytesConverter;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -28,6 +26,7 @@ import java.util.Map;
 
 public class Controller {
     private String pathToSign;
+    private String pathToCheckSign;
     private Map<String, CryptoHash> cryptoHashAlgorythms;
     private String errorStyle = "-fx-background-color: red; -fx-text-fill: #fff";
 
@@ -41,8 +40,20 @@ public class Controller {
         alert.showAndWait();
     }
 
+    void completeAlert(String message, Alert.AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setTitle("Complete!");
+        alert.setHeaderText(message);
+        alert.setContentText("");
+
+        alert.showAndWait();
+    }
+
     @FXML
     private TextArea taChechSignMessage;
+
+    @FXML
+    private TextField tfCheckSignR;
 
     @FXML
     private Button btnCheckSignSelectFile;
@@ -63,6 +74,9 @@ public class Controller {
     private TextField tfSignSignature;
 
     @FXML
+    private TextField tfCheckSignE;
+
+    @FXML
     private TextField tfSignD;
 
     @FXML
@@ -81,7 +95,20 @@ public class Controller {
     private ComboBox<String> cbCheckSignSelectHashFunction;
 
     @FXML
+    private Button btnChechSignature;
+
+    @FXML
+    private TextField tfExpectedHash;
+
+    @FXML
+    private TextField tfActualHash;
+
+    @FXML
     private ComboBox<String> cbSignSelectHashFunction;
+
+    @FXML
+    private TextField tfCheckSignSignature;
+
 
 
 
@@ -186,6 +213,12 @@ public class Controller {
                     tfSignHash.clear();
                     taSignedMessage.setText(bytesConverter.byteArray2String(plain));
                     pathToSign = path;
+                } else if(event.getSource() == btnCheckSignSelectFile) {
+                    tfActualHash.clear();
+                    tfExpectedHash.clear();
+
+                    taChechSignMessage.setText(bytesConverter.byteArray2String(plain));
+                    pathToCheckSign = path;
                 }
             } catch (IOException e) {
 
@@ -198,6 +231,42 @@ public class Controller {
         cryptoHashAlgorythms = new HashMap<>();
         cryptoHashAlgorythms.put("SHA-1", new SHA1());
         cbSignSelectHashFunction.getItems().addAll(cryptoHashAlgorythms.keySet());
+        cbCheckSignSelectHashFunction.getItems().addAll(cryptoHashAlgorythms.keySet());
+    }
+
+    @FXML
+    void btnCheckSignatureClick(ActionEvent event) {
+        try {
+            BigInteger e = new BigInteger(tfCheckSignE.getText());
+            BigInteger r = new BigInteger(tfCheckSignR.getText());
+
+            String hashAlgorythm = cbCheckSignSelectHashFunction.getValue();
+            if(!cryptoHashAlgorythms.containsKey(hashAlgorythm)) throw  new ArithmeticException("Please, select hash algorithm");
+            CryptoHash cryptoHash = cryptoHashAlgorythms.get(hashAlgorythm);
+
+            byte[] message = Files.readAllBytes(Paths.get(pathToSign));
+
+            RSAPublicKey rsaPublicKey = new RSAPublicKey(e,r);
+
+            BigInteger signature = new BigInteger(tfCheckSignSignature.getText());
+
+            boolean isCorrect = RSASignature.checkSignature(rsaPublicKey, signature, message, cryptoHash);
+            if(isCorrect) {
+                completeAlert("Signature confirmed", Alert.AlertType.CONFIRMATION);
+            } else {
+                completeAlert("The signature has been forged", Alert.AlertType.WARNING);
+            }
+
+            tfExpectedHash.setText(cryptoHash.getIntHash(message).mod(rsaPublicKey.getR()).toString()); // HASH(MESSAGE) MOD R
+            tfActualHash.setText(DigitalSignatureMath.power(signature, rsaPublicKey.getE(), rsaPublicKey.getR()).toString());
+
+        } catch (ArithmeticException e) {
+            errorAlert(e.getMessage());
+        } catch (IOException e) {
+            errorAlert("Invalid file");
+        } catch (Exception e) {
+            errorAlert(e.getMessage());
+        }
     }
 
 }
