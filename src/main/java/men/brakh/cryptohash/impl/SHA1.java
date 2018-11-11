@@ -156,9 +156,9 @@ public class SHA1 implements CryptoHash {
 
 
     /**
-     * Get hash in biginterer format
+     * Get hash in BigInteger format
      * @param msg Array of message's bytes
-     * @return  hash in biginterer format
+     * @return  hash in BigInteger format
      */
     public BigInteger getIntHash(byte[] msg) {
         byte[] hash = encode(msg);

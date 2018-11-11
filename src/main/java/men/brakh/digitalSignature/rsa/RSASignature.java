@@ -22,6 +22,13 @@ public class RSASignature implements SignatureAlgorithm {
         return hashFunction;
     }
 
+    /**
+     * Creating an object for the RSA signature
+     * @param p prime number
+     * @param q prime number
+     * @param privateexp private exponent, 1 < p < (p-1)(q-1), gcd(privateexp, (p-1)(q-1)) = 1
+     * @param hashFunction The object to get the hash function (Must implement the interface CryptoHash)
+     */
     public RSASignature(BigInteger p, BigInteger q, BigInteger privateexp, CryptoHash hashFunction) {
         if(!DigitalSignatureMath.isPrime(p)) throw new ArithmeticException("P should be prime");
         if(!DigitalSignatureMath.isPrime(q)) throw new ArithmeticException("Q should be prime");
@@ -40,6 +47,11 @@ public class RSASignature implements SignatureAlgorithm {
     }
 
 
+    /**
+     * Signs the message and returns the digital signature
+     * @param message bytes of message
+     * @return  digital signature
+     */
     @Override
     public BigInteger sign(byte[] message) {
         System.out.println(hashFunction.getHash(message));
@@ -47,6 +59,14 @@ public class RSASignature implements SignatureAlgorithm {
         return DigitalSignatureMath.power(hash, privateKey.getD(), privateKey.getR()); // return hash^d mod r
     }
 
+    /**
+     * Verifies signature validity
+     * @param key public key of the user who should own the signature
+     * @param s digital signature of user
+     * @param message bytes of message
+     * @param hashFunction The object to get the hash function (Must implement the interface CryptoHash)
+     * @return True if the signature is correct
+     */
     public static boolean checkSignature(RSAPublicKey key, BigInteger s, byte[] message, CryptoHash hashFunction) {
         BigInteger hashFromSign = DigitalSignatureMath.power(s, key.getE(), key.getR());
         BigInteger actualHash = hashFunction.getIntHash(message).mod(key.getR());

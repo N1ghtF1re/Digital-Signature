@@ -2,6 +2,11 @@ package men.brakh.digitalSignature.rsa;
 
 import java.math.BigInteger;
 
+/**
+ * PUBLIC KEY
+ * E : PUBLIC EXPONENT
+ * R : P * Q
+ */
 public class RSAPublicKey {
     private BigInteger e;
     private BigInteger r;

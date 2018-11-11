@@ -8,6 +8,11 @@ import java.security.NoSuchAlgorithmException;
 
 public class SHA256 implements CryptoHash {
 
+    /**
+     * Get hash in hex string format
+     * @param msg Array of message's bytes
+     * @return  hash in hex string format
+     */
     @Override
     public String getHash(byte[] msg) {
         MessageDigest md = null;
@@ -27,6 +32,11 @@ public class SHA256 implements CryptoHash {
         return hex.toString();
     }
 
+    /**
+     * Get hash in BigInteger format
+     * @param msg Array of message's bytes
+     * @return  hash in BigInteger format
+     */
     @Override
     public BigInteger getIntHash(byte[] msg) {
         MessageDigest md = null;
