@@ -15,7 +15,10 @@ The library contains contains RSA digital signature algorithm
 ## Class Elgamal: 
 
 ### Constructors: 
-- **RSASignature(BigInteger p, BigInteger q, BigInteger privateexp, CryptoHash hashFunction)** . p,q - prime number,  privateexp - private exponent, 1 < p < (p-1)(q-1), gcd(privateexp, (p-1)(q-1)) = 1, hashFunction - The object to get the hash function (Must implement the interface CryptoHash)
+- **RSASignature(BigInteger p, BigInteger q, BigInteger privateexp, CryptoHash hashFunction)** 
+  - p,q - prime number
+  - privateexp - private exponent, 1 < p < (p-1)(q-1), gcd(privateexp, (p-1)(q-1)) = 1, 
+  - hashFunction - The object to get the hash function (Must implement the interface CryptoHash)
      
 
 ### Methods: 
