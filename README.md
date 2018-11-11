@@ -1,5 +1,5 @@
 <h1 align="center">Digital Signature</h1>
-<p align="center"><img src="https://banner2.kisspng.com/20180711/wrk/kisspng-digital-signature-electronic-signature-docusign-do-electronic-signature-5b466a1de7ea61.2114917015313413419499.jpg" width=150></p>
+<p align="center"><img src="https://i.imgur.com/1kbgY3V.png" height=150></p>
 
 <p align="center">
 <a href="https://github.com/N1ghtF1re/Digital-Signature/stargazers"><img src="https://img.shields.io/github/stars/N1ghtF1re/Digital-Signature.svg" alt="Stars"></a>
