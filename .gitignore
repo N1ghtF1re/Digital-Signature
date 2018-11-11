@@ -3,3 +3,4 @@
 target/
 *.signature
 *.test
+examples/
