@@ -136,14 +136,16 @@ public class Controller {
             BigInteger d = new BigInteger(textField.getText());
 
             BigInteger p = new BigInteger(tfSignP.getText());
-            BigInteger q = new BigInteger(tfSignP.getText());
+            BigInteger q = new BigInteger(tfSignQ.getText());
             BigInteger phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
+
 
             if ((d.compareTo(BigInteger.ONE) <= 0) || (d.compareTo(phi) >= 0))
                 throw new ArithmeticException("D should be from 2 to phi(p*q) - 1");
-            if (!d.gcd(phi).equals(BigInteger.ONE))
+            else if (!d.gcd(phi).equals(BigInteger.ONE))
                 throw new ArithmeticException("D should be mutually simple with phi(p*q)");
-            textField.setStyle("");
+            else
+                textField.setStyle("");
         } catch (Exception e) {
             textField.setStyle(errorStyle);
         }
