@@ -9,6 +9,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import men.brakh.cryptohash.CryptoHash;
 import men.brakh.cryptohash.impl.SHA1;
+import men.brakh.cryptohash.impl.SHA256;
 import men.brakh.digitalSignature.DigitalSignatureMath;
 import men.brakh.digitalSignature.SignatureAlgorithm;
 import men.brakh.digitalSignature.rsa.RSAPublicKey;
@@ -227,14 +228,6 @@ public class Controller {
     }
 
     @FXML
-    void initialize() {
-        cryptoHashAlgorythms = new HashMap<>();
-        cryptoHashAlgorythms.put("SHA-1", new SHA1());
-        cbSignSelectHashFunction.getItems().addAll(cryptoHashAlgorythms.keySet());
-        cbCheckSignSelectHashFunction.getItems().addAll(cryptoHashAlgorythms.keySet());
-    }
-
-    @FXML
     void btnCheckSignatureClick(ActionEvent event) {
         try {
             BigInteger e = new BigInteger(tfCheckSignE.getText());
@@ -267,6 +260,15 @@ public class Controller {
         } catch (Exception e) {
             errorAlert(e.getMessage());
         }
+    }
+
+    @FXML
+    void initialize() {
+        cryptoHashAlgorythms = new HashMap<>();
+        cryptoHashAlgorythms.put("SHA-1", new SHA1());
+        cryptoHashAlgorythms.put("SHA-256", new SHA256());
+        cbSignSelectHashFunction.getItems().addAll(cryptoHashAlgorythms.keySet());
+        cbCheckSignSelectHashFunction.getItems().addAll(cryptoHashAlgorythms.keySet());
     }
 
 }
