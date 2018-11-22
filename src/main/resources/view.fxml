@@ -17,27 +17,27 @@
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
                   <TextArea fx:id="taSignedMessage" layoutY="2.0" prefHeight="623.0" prefWidth="585.0" wrapText="true" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="540.0" AnchorPane.topAnchor="0.0" />
-                  <TextField fx:id="tfSignHash" editable="false" layoutX="577.0" layoutY="384.0" prefHeight="51.0" prefWidth="459.0" promptText="Message hash..." AnchorPane.rightAnchor="44.0">
+                  <TextField fx:id="tfSignHash" editable="false" layoutX="576.0" layoutY="337.0" prefHeight="51.0" prefWidth="459.0" promptText="Message hash..." AnchorPane.rightAnchor="45.0">
                      <font>
                         <Font size="15.0" />
                      </font></TextField>
-                  <TextField fx:id="tfSignSignature" editable="false" layoutX="577.0" layoutY="494.0" prefHeight="51.0" prefWidth="459.0" promptText="Message signature..." AnchorPane.rightAnchor="44.0">
+                  <TextField fx:id="tfSignSignature" editable="false" layoutX="577.0" layoutY="515.0" prefHeight="51.0" prefWidth="459.0" promptText="Message signature..." AnchorPane.rightAnchor="44.0">
                      <font>
                         <Font size="15.0" />
                      </font></TextField>
                   <TextField fx:id="tfSignP" layoutX="577.0" layoutY="59.0" onKeyReleased="#tfSignPrimeKeyReleased" prefHeight="51.0" prefWidth="134.0" promptText="P..." AnchorPane.rightAnchor="369.0">
                      <font>
-                        <Font size="20.0" />
+                        <Font size="15.0" />
                      </font></TextField>
                   <TextField fx:id="tfSignQ" layoutX="740.0" layoutY="59.0" onKeyReleased="#tfSignPrimeKeyReleased" prefHeight="51.0" prefWidth="134.0" promptText="Q..." AnchorPane.rightAnchor="206.0">
                      <font>
-                        <Font size="20.0" />
+                        <Font size="15.0" />
                      </font></TextField>
                   <TextField fx:id="tfSignD" layoutX="902.0" layoutY="59.0" onKeyReleased="#tfSignDKeyReleased" prefHeight="51.0" prefWidth="134.0" promptText="D..." AnchorPane.rightAnchor="44.0">
                      <font>
-                        <Font size="20.0" />
+                        <Font size="15.0" />
                      </font></TextField>
-                  <ComboBox fx:id="cbSignSelectHashFunction" layoutX="576.0" layoutY="274.0" prefHeight="52.0" prefWidth="463.0" AnchorPane.rightAnchor="41.0" />
+                  <ComboBox fx:id="cbSignSelectHashFunction" layoutX="574.0" layoutY="249.0" prefHeight="52.0" prefWidth="463.0" AnchorPane.rightAnchor="43.0" />
                   <Label layoutX="589.0" layoutY="31.0" text="Prime number P" AnchorPane.rightAnchor="381.0">
                      <font>
                         <Font name="Ubuntu" size="15.0" />
@@ -53,17 +53,17 @@
                         <Font name="Ubuntu" size="15.0" />
                      </font>
                   </Label>
-                  <Label layoutX="584.0" layoutY="234.0" text="Select a hash algorithm" AnchorPane.rightAnchor="282.0">
+                  <Label layoutX="584.0" layoutY="221.0" text="Select a hash algorithm" AnchorPane.rightAnchor="282.0">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label layoutX="576.0" layoutY="355.0" text="HASH mod p*q (10 based)" AnchorPane.rightAnchor="267.0">
+                  <Label layoutX="573.0" layoutY="316.0" text="HASH mod p*q (10 based)" AnchorPane.rightAnchor="270.0">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label layoutX="587.0" layoutY="461.0" text="SIGNATURE (10 based)" AnchorPane.rightAnchor="285.0">
+                  <Label layoutX="574.0" layoutY="487.0" text="SIGNATURE (10 based)" AnchorPane.rightAnchor="298.0">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -76,12 +76,12 @@
                   <Button fx:id="btnSignSelectFile" layoutX="154.0" layoutY="635.0" mnemonicParsing="false" onAction="#btnSelectFileClick" prefHeight="33.0" prefWidth="168.0" text="Select file..." AnchorPane.bottomAnchor="19.0" AnchorPane.leftAnchor="154.0" AnchorPane.rightAnchor="758.0" />
                   <TextField fx:id="tfSignE" editable="false" layoutX="577.0" layoutY="155.0" prefHeight="49.0" prefWidth="201.0" promptText="E..." AnchorPane.rightAnchor="302.0">
                      <font>
-                        <Font size="20.0" />
+                        <Font size="15.0" />
                      </font>
                   </TextField>
                   <TextField fx:id="tfSignR" editable="false" layoutX="835.0" layoutY="155.0" prefHeight="49.0" prefWidth="201.0" promptText="R..." AnchorPane.rightAnchor="44.0">
                      <font>
-                        <Font size="20.0" />
+                        <Font size="15.0" />
                      </font>
                   </TextField>
                   <Label layoutX="619.0" layoutY="131.0" text="Generated E" AnchorPane.rightAnchor="376.0">
@@ -94,6 +94,16 @@
                         <Font name="Ubuntu" size="15.0" />
                      </font>
                   </Label>
+                  <Label layoutX="573.0" layoutY="399.0" text="HASH mod p*q (16 based)" AnchorPane.rightAnchor="270.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="tfSignHash16" editable="false" layoutX="576.0" layoutY="420.0" prefHeight="51.0" prefWidth="459.0" promptText="Message hash..." AnchorPane.rightAnchor="45.0">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </TextField>
                </children></AnchorPane>
       </content>
     </Tab>
@@ -121,15 +131,15 @@
                   </Label>
                   <TextField fx:id="tfCheckSignR" layoutX="838.0" layoutY="75.0" prefHeight="49.0" prefWidth="201.0" promptText="R..." AnchorPane.rightAnchor="41.0">
                      <font>
-                        <Font size="20.0" />
+                        <Font size="15.0" />
                      </font>
                   </TextField>
                   <TextField fx:id="tfCheckSignE" layoutX="619.0" layoutY="75.0" prefHeight="49.0" prefWidth="201.0" promptText="E..." AnchorPane.rightAnchor="260.0">
                      <font>
-                        <Font size="20.0" />
+                        <Font size="15.0" />
                      </font>
                   </TextField>
-                  <TextField fx:id="tfExpectedHash" layoutX="595.0" layoutY="462.0" prefHeight="61.0" prefWidth="459.0" AnchorPane.rightAnchor="26.0">
+                  <TextField fx:id="tfExpectedHash" editable="false" layoutX="595.0" layoutY="462.0" prefHeight="61.0" prefWidth="459.0" AnchorPane.rightAnchor="26.0">
                      <font>
                         <Font size="15.0" />
                      </font>
@@ -149,12 +159,12 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="tfActualHash" layoutX="595.0" layoutY="562.0" prefHeight="61.0" prefWidth="459.0" AnchorPane.rightAnchor="26.0">
+                  <TextField fx:id="tfActualHash" editable="false" layoutX="595.0" layoutY="562.0" prefHeight="61.0" prefWidth="459.0" AnchorPane.rightAnchor="26.0">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </TextField>
-                  <TextField fx:id="tfCheckSignSignature" layoutX="595.0" layoutY="286.0" prefHeight="52.0" prefWidth="459.0" AnchorPane.rightAnchor="26.0">
+                  <TextField fx:id="tfCheckSignSignature" editable="false" layoutX="595.0" layoutY="286.0" prefHeight="52.0" prefWidth="459.0" AnchorPane.rightAnchor="26.0">
                      <font>
                         <Font size="15.0" />
                      </font>

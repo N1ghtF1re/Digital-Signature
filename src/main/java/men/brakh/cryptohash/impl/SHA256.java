@@ -8,6 +8,8 @@ import java.security.NoSuchAlgorithmException;
 
 public class SHA256 implements CryptoHash {
 
+    private static final int minBitLength = 256;
+
     /**
      * Get hash in hex string format
      * @param msg Array of message's bytes
@@ -50,5 +52,10 @@ public class SHA256 implements CryptoHash {
         byte[] hashbytes = md.digest();
 
         return new BigInteger(1, hashbytes);
+    }
+
+    @Override
+    public int getMinBitLength() {
+        return minBitLength;
     }
 }

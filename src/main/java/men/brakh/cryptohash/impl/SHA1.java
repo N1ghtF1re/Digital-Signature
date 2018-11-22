@@ -7,6 +7,9 @@ import java.math.BigInteger;
 
 public class SHA1 implements CryptoHash {
 
+    private static final int minBitLength = 160;
+
+
     /**
      * Basic initialization of 512-bit blocks (Supplement 0, 1 and text length):
      *  Append the bit '1' to the message e.g. by adding 0x80 if message length is a multiple of 8 bits.
@@ -22,9 +25,8 @@ public class SHA1 implements CryptoHash {
         byte[] with_one = new byte[defaultLength+1];
         System.arraycopy(data, 0, with_one, 0, defaultLength);
         with_one[with_one.length - 1] = (byte) 0x80;	// append 1
-        int new_length = with_one.length*8;		// get new length in bits
+        int new_length = with_one.length*8;
 
-        // find length multiple of 512
         while (new_length % 512 != 448) {
             new_length += 8;
         }
@@ -33,7 +35,7 @@ public class SHA1 implements CryptoHash {
         byte[] with_zeros = new byte[new_length/8];
         System.arraycopy(with_one, 0 , with_zeros, 0, with_one.length);
 
-        // add 64 bits for original length
+        // add 64 bits with original length
         byte[] output = new byte[with_zeros.length + 8];
         for (int i = 0; i < 8; i++) {
             output[output.length -1 - i] = (byte) ((defaultBirsLength >>> (8 * i)) & 0xFF);
@@ -164,6 +166,11 @@ public class SHA1 implements CryptoHash {
         byte[] hash = encode(msg);
 
         return new BigInteger(1, hash);
+    }
+
+    @Override
+    public int getMinBitLength() {
+        return minBitLength;
     }
 
     /**

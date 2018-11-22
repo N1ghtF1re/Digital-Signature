@@ -14,7 +14,6 @@ import men.brakh.digitalSignature.DigitalSignatureMath;
 import men.brakh.digitalSignature.SignatureAlgorithm;
 import men.brakh.digitalSignature.rsa.RSAPublicKey;
 import men.brakh.digitalSignature.rsa.RSASignature;
-import men.brakh.digitalSignatureFrame.BytesConverter;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -22,6 +21,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -88,6 +88,8 @@ public class Controller {
 
     @FXML
     private TextField tfSignHash;
+    @FXML
+    private TextField tfSignHash16;
 
     @FXML
     private Button btnSign;
@@ -129,6 +131,20 @@ public class Controller {
         chechD();
     }
 
+    String removeLastLine(String source) {
+        String[] lines = source.split("\n");
+        StringBuilder sourceText = new StringBuilder(source);
+
+        char currChar;
+        do {
+            currChar = sourceText.charAt(sourceText.length() - 1);
+            sourceText.deleteCharAt(sourceText.length() - 1);
+        } while(currChar != '\n');
+
+        return sourceText.toString();
+
+    }
+
     void chechD() {
         TextField textField = tfSignD;
         try {
@@ -157,8 +173,8 @@ public class Controller {
     }
 
     void saveSignature(String filepath, BigInteger signature) throws IOException {
-        FileWriter fileWriter = new FileWriter(filepath + ".signature");
-        fileWriter.write(signature.toString());
+        FileWriter fileWriter = new FileWriter(filepath + ".signed");
+        fileWriter.write(taSignedMessage.getText() + "\n" + signature.toString());
         fileWriter.close();
     }
 
@@ -169,18 +185,18 @@ public class Controller {
             if(!cryptoHashAlgorythms.containsKey(hashAlgorythm)) throw  new ArithmeticException("Please, select hash algorithm");
             CryptoHash cryptoHash = cryptoHashAlgorythms.get(hashAlgorythm);
 
-            byte[] message = Files.readAllBytes(Paths.get(pathToSign));
-
+            //byte[] message = Files.readAllBytes(Paths.get(pathToSign));
+            byte[] message = taSignedMessage.getText().getBytes();
 
 
             BigInteger p = new BigInteger(tfSignP.getText());
             BigInteger q = new BigInteger(tfSignQ.getText());
             BigInteger d = new BigInteger(tfSignD.getText());
 
-            SignatureAlgorithm signatureAlgorithm = new RSASignature(p,q,d,cryptoHash);
+            RSASignature signatureAlgorithm = new RSASignature(p,q,d,cryptoHash);
             BigInteger signature = signatureAlgorithm.sign(message);
 
-            RSAPublicKey rsaPublicKey = ((RSASignature) signatureAlgorithm).getPublicKey();
+            RSAPublicKey rsaPublicKey = signatureAlgorithm.getPublicKey();
 
             tfSignE.setText(rsaPublicKey.getE().toString());
             tfSignR.setText(rsaPublicKey.getR().toString());
@@ -188,8 +204,9 @@ public class Controller {
 
             tfSignSignature.setText(signature.toString());
 
-            BigInteger hash = cryptoHash.getIntHash(message).mod(rsaPublicKey.getR());
+            BigInteger hash = cryptoHash.getIntHash(message);
             tfSignHash.setText(hash.toString());
+            tfSignHash16.setText(hash.toString(16));
             saveSignature(pathToSign, signature);
         } catch (ArithmeticException e) {
             errorAlert(e.getMessage());
@@ -209,18 +226,25 @@ public class Controller {
             path = selectedFile.getAbsolutePath();
             try {
                 byte[] plain = Files.readAllBytes(Paths.get(selectedFile.getAbsolutePath()));
-                BytesConverter bytesConverter = new BytesConverter();
 
                 if(event.getSource() == btnSignSelectFile) {
                     tfSignSignature.clear();
                     tfSignHash.clear();
-                    taSignedMessage.setText(bytesConverter.byteArray2String(plain));
+                    taSignedMessage.setText(new String(plain));
                     pathToSign = path;
                 } else if(event.getSource() == btnCheckSignSelectFile) {
                     tfActualHash.clear();
                     tfExpectedHash.clear();
 
-                    taChechSignMessage.setText(bytesConverter.byteArray2String(plain));
+                    taChechSignMessage.setText(removeLastLine(new String(plain)));
+
+                    String[] text = new String(plain).split("\n");
+
+                    String signatureFromFile = text[text.length-1];
+
+                    tfCheckSignSignature.setText(signatureFromFile);
+
+
                     pathToCheckSign = path;
                 }
             } catch (IOException e) {
@@ -239,7 +263,10 @@ public class Controller {
             if(!cryptoHashAlgorythms.containsKey(hashAlgorythm)) throw  new ArithmeticException("Please, select hash algorithm");
             CryptoHash cryptoHash = cryptoHashAlgorythms.get(hashAlgorythm);
 
-            byte[] message = Files.readAllBytes(Paths.get(pathToSign));
+
+
+            byte[] message = taChechSignMessage.getText().getBytes();
+
 
             RSAPublicKey rsaPublicKey = new RSAPublicKey(e,r);
 
@@ -257,8 +284,6 @@ public class Controller {
 
         } catch (ArithmeticException e) {
             errorAlert(e.getMessage());
-        } catch (IOException e) {
-            errorAlert("Invalid file");
         } catch (Exception e) {
             errorAlert(e.getMessage());
         }
